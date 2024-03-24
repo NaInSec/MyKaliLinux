@@ -1,0 +1,42 @@
+#!/bin/bash
+########################################################################
+# DRACOS REMASTERING SCRIPT
+# CREATED   : Eko Saputra (ekovegeance)
+# MAIL      : me@ekovegeance.com
+# LICENSE   : GNU GPL 3.0
+# WEBSITE   : https://www.ekovegeance.com/
+# VERSION   : v3.1.1 (06 Sep 2021)
+########################################################################
+
+# Mendownload Sistem Operasi DracOS GNU/linux Remaster
+
+# Membuat Folder Kerja 
+  mkdir ~/distro
+
+# Pindah Ke Directory Kerja
+  cd ~/distro
+
+# Membuat Directory extract-cd dan mnt
+  mkdir binary mnt
+
+# Mount Iso Linux yang mau di remastering
+  sudo mount -o loop ~/INSERT-NAME-HERE.iso mnt
+
+# Rsync filesystem.squashfsh
+  sudo rsync --exclude=/live/filesystem.squashfs -a mnt/ binary
+
+# Mengextract filesystem.squashfs
+  sudo unsquashfs mnt/live/filesystem.squashfs
+
+# Ganti nama directory squashfs-root ke edit
+  sudo mv squashfs-root chroot
+
+# Mengopy configuration resolv.conf ke chroot/etc
+  sudo cp /etc/resolv.conf chroot/etc/
+
+#Memutuskan Kait (umount) mnt yang berisi titik kait dari file iso.
+  sudo umount ./mnt
+
+#Membersihkan directory "mnt" yang sudah tidak dipakai lagi.
+  sudo rm -rf ./mnt
+
